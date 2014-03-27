@@ -47,6 +47,14 @@ Example.new.as_xml
 - `:root_node` - Symbol define a root node when there is none.
 - `:namespace_definitions` - Hash define keys that you need to add to the root node.
 
+- `:key_converter` - Choices are the following:
+```ruby
+  :lower_camelcase
+  :camelcase
+  :upcase
+  :none
+```
+
 Usage:
 
 ```ruby
