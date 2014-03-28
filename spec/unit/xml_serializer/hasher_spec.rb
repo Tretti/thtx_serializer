@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe 'Hasher' do
@@ -26,12 +27,12 @@ describe 'Hasher' do
       it 'will generate a hash' do
         obj.class.class_eval do
           def mock_method
-            "A String"
+            'A String'
           end
         end
 
         obj.class.send(:xml_attr, :mock_method)
-        expected = { mock_method: "A String" }
+        expected = { mock_method: 'A String' }
 
         expect(subject.hash_object).to eq expected
       end
@@ -42,35 +43,41 @@ describe 'Hasher' do
     context 'given an attribute and empty options' do
       it 'will produce a hash' do
         obj.class.class_eval do
-          def mock_method; "A String"; end
+          def mock_method
+            'A String'
+          end
         end
 
         result = subject.send(:produce_data, :mock_method, {})
 
-        expect(result).to eq({ mock_method: "A String" })
+        expect(result).to eq(mock_method: 'A String')
       end
 
       context 'given an attribute and option with the key :into' do
         it 'will produce a hash' do
           obj.class.class_eval do
-            def mock_method; "A String"; end
+            def mock_method
+              'A String'
+            end
           end
 
-          result = subject.send(:produce_data, :mock_method, { into: :into_key })
+          result = subject.send(:produce_data, :mock_method, into: :into_key)
 
-          expect(result).to eq({ into_key: "A String" })
+          expect(result).to eq(into_key: 'A String')
         end
       end
 
       context 'given an attribute and option with the key :in' do
         it 'will produce a hash with a new root element' do
           obj.class.class_eval do
-            def mock_method; "A String"; end
+            def mock_method
+              'A String'
+            end
           end
 
-          result = subject.send(:produce_data, :mock_method, { in: :in_key })
+          result = subject.send(:produce_data, :mock_method, in: :in_key)
 
-          expect(result).to eq({ in_key: { mock_method: "A String" } })
+          expect(result).to eq(in_key: { mock_method: 'A String' })
         end
       end
 
@@ -84,22 +91,24 @@ describe 'Hasher' do
             end
 
             obj.class.class_eval do
-              def mock_method; Array.new(3, TestClassAs.new) + Array.new(1, "String"); end;
+              def mock_method
+                Array.new(3, TestClassAs.new) + Array.new(1, 'String')
+              end
             end
 
             expected = {
               rows: {
                 row: [
-                  { test_class_as: {:defined=>"on the class"}},
-                  { test_class_as: {:defined=>"on the class"}},
-                  { test_class_as: {:defined=>"on the class"}},
-                  "String"
+                  { test_class_as: { defined: 'on the class' } },
+                  { test_class_as: { defined: 'on the class' } },
+                  { test_class_as: { defined: 'on the class' } },
+                  'String'
                 ]
               }
             }
 
-            expect(subject.send(:produce_data, :mock_method, { into: :row })).
-              to eq(expected)
+            expect(subject.send(:produce_data, :mock_method, into: :row))
+            .to eq(expected)
           end
         end
       end

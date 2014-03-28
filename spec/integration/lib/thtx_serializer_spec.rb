@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 require_relative '../../support/lib/serializable_class'
 

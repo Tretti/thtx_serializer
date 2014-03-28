@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe 'Class Methods' do
@@ -34,7 +35,8 @@ describe 'Class Methods' do
 
         klass = TestClassDuplicate
 
-        expect{ klass.send(:xml_attr, :duplicate) }.to raise_error(RuntimeError)
+        expect { klass.send(:xml_attr, :duplicate) }
+        .to raise_error(RuntimeError)
       end
     end
 
@@ -42,12 +44,11 @@ describe 'Class Methods' do
       it 'will be contained inside the list of attributes' do
         class TestClassAs
           include THTXSerializer
-          xml_attr :first, { in: :test_key }
+          xml_attr :first, in: :test_key
         end
 
         klass = TestClassAs
-        expect(klass.xml_attributes).
-          to eq(first: { in: :test_key } )
+        expect(klass.xml_attributes).to eq(first: { in: :test_key })
       end
     end
   end

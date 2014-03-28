@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe 'Converter' do
@@ -8,7 +9,7 @@ describe 'Converter' do
       it 'will produce an empty string' do
         xml = subject.to_xml({})
 
-        expected = ""
+        expected = ''
 
         expect(xml).to eq expected
       end
@@ -16,7 +17,7 @@ describe 'Converter' do
 
     context 'given a plain hash' do
       it 'will transform into a string containing xml' do
-        xml = subject.to_xml({ one: { two: 1, three: 2 } })
+        xml = subject.to_xml(one: { two: 1, three: 2 })
 
         expected = "<one><two>1</two><three>2</three></one>"
 
@@ -26,7 +27,7 @@ describe 'Converter' do
 
     context 'given a nested hash' do
       it 'will transform into a string containing xml' do
-        xml = subject.to_xml({ one: { two: 1, three: { four: 3 } } })
+        xml = subject.to_xml(one: { two: 1, three: { four: 3 } })
 
         expected = "<one><two>1</two><three><four>3</four></three></one>"
 
@@ -36,7 +37,7 @@ describe 'Converter' do
 
     context 'given no :key_converter setting is provided' do
       it 'will not manipulate the keys' do
-        xml = subject.to_xml({ one: { one_one: 1, 'two-two' => { three: 3 } } })
+        xml = subject.to_xml(one: { one_one: 1, 'two-two' => { three: 3 } })
 
         expected = "<one><one_one>1</one_one><two-two><three>3</three></two-two></one>"
 
@@ -46,7 +47,8 @@ describe 'Converter' do
 
     context 'given a :key_converter setting is provided' do
       it 'will manipulate the keys accordingly' do
-        xml = subject.to_xml({ one: { one_one: 1, two_two: { three: 3 } } },
+        xml = subject.to_xml(
+          { one: { one_one: 1, two_two: { three: 3 } } },
           key_converter: :camelcase)
 
         expected = "<One><OneOne>1</OneOne><TwoTwo><Three>3</Three></TwoTwo></One>"
@@ -57,7 +59,9 @@ describe 'Converter' do
 
     context 'given a :namespace option is provided' do
       it 'will be able to handle a namespace option' do
-        xml = subject.to_xml({one: { two: 1, three: 2 }}, namespace: 'integration' )
+        xml = subject.to_xml(
+          { one: { two: 1, three: 2 } },
+          namespace: 'integration')
 
         expected = "<integration:one><integration:two>1</integration:two><integration:three>2</integration:three></integration:one>"
 
@@ -66,9 +70,10 @@ describe 'Converter' do
     end
 
     context 'given the option :namespace_definitions has been set' do
-      it 'will be able to extract namespace_definitions and apply them to the xml' do
-        xml = subject.to_xml({one: { two: 1, three: 2 }},
-          namespace_definitions: { 'melons:test' => 'string'})
+      it 'will extract namespace_definitions and apply them to the xml' do
+        xml = subject.to_xml(
+          { one: { two: 1, three: 2 } },
+          namespace_definitions: { 'melons:test' => 'string' })
 
         expected = "<one melons:test=\"string\"><two>1</two><three>2</three></one>"
 
@@ -78,8 +83,11 @@ describe 'Converter' do
 
     context 'given the option :human_readable' do
       it 'will massage an string of xml into a human readable string' do
-        xml = subject.to_xml({one: { two: 1, three: 2 }},
-          namespace_definitions: { 'xmlns:test' => 'string'}, human_readable: true)
+        xml = subject.to_xml(
+          { one: { two: 1, three: 2 } },
+          namespace_definitions: { 'xmlns:test' => 'string' },
+          human_readable: true
+        )
 
         expected = "<?xml version=\"1.0\"?>\n<one xmlns:test=\"string\">\n  <two>1</two>\n  <three>2</three>\n</one>\n"
 
