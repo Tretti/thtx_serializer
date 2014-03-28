@@ -15,6 +15,16 @@ describe 'Converter' do
       end
     end
 
+    context 'given a hash without a root key' do
+      it 'will return a string with xml' do
+        xml = subject.to_xml(two: 1, three: 2 )
+
+        expected = '<two>1</two><three>2</three>'
+
+        expect(xml).to eq expected
+      end
+    end
+
     context 'given a plain hash' do
       it 'will transform into a string containing xml' do
         xml = subject.to_xml(one: { two: 1, three: 2 })

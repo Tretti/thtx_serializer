@@ -121,7 +121,7 @@ module THTXSerializer
       end
 
       return [root_node, hashed_data] if root_node
-      false
+      [nil, hashed_data]
     end
 
     # @return [Hash]
