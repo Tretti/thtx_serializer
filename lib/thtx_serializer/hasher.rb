@@ -1,9 +1,16 @@
+# encoding: utf-8
 require 'active_support/inflector'
 
 module THTXSerializer
+  # Manages the creation of the object hash.
+  # When invoked it will produce a hash representation of the object
+  # according to the defined attributes.
+  #
   class Hasher
     attr_reader :node
 
+    # @param [Object] obj an object that includes THTXSerializer
+    # @return [THTXSerializer]
     def initialize(obj)
       @node = obj
     end
@@ -66,12 +73,24 @@ module THTXSerializer
       result = node.send(key)
 
       if result.respond_to?(:each)
-        result.map do |obj|
-          obj.respond_to?(:__hash_data__) ? obj.__hash_data__ : obj
-        end
+        handle_enumerable(result)
       else
-        result.respond_to?(:__hash_data__) ? result.__hash_data__ : result
+        handle_regular_object(result)
       end
+    end
+
+    # @param [Enumerable] enum an object that implements each.
+    # @return [Array]
+    def handle_enumerable(enum)
+      enum.map do |obj|
+        obj.respond_to?(:__hash_data__) ? obj.__hash_data__ : obj
+      end
+    end
+
+    # @param [Object] obj any object that is not an enumerable.
+    # @return [Object, Hash]
+    def handle_regular_object(obj)
+      obj.respond_to?(:__hash_data__) ? obj.__hash_data__ : obj
     end
 
     # A wrapping for ActiveSupport.

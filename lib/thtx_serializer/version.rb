@@ -1,3 +1,5 @@
+# encoding: utf-8
 module THTXSerializer
-  VERSION = '0.0.1'
+  # VERSION the library version.
+  VERSION = '0.0.2'
 end

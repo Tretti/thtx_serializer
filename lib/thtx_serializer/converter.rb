@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'gyoku'
 require 'nokogiri'
 
@@ -5,32 +6,40 @@ module THTXSerializer
   # This module depends upon Nokogiri to massage the output and
   # Gyoku to actually parse the data.
   module Converter
-    extend self
+    module_function
 
-    # @param [Hash] hash a collection of objects serialized into a hash.
+    # @param [Hash] hashed_data a collection of objects serialized into a hash.
     # @param [Hash] options a hash, this currently supports
     #        namespace: 'integration'
     #        root_node: 'sync_request' by default the top element will be used
-    #        namespace_definitions: { 'xmlns:integration' => "http://schemas.example.com/integration/0.1/" }
+    #        namespace_definitions:
+    #          { 'xmlns:integration' =>
+    #                          "http://schemas.example.com/integration/0.1/" }
     #        human_readable: true
     #        key_converter: :camelcase See Gyoku for further details
     #
     # @return [String] A String containing XML.
     def to_xml(hashed_data, options = {})
+      return '' if hashed_data.empty?
       merged_options = default_options.merge(extract_options(options))
       root_node, hashed_data = extract_root_node(options, hashed_data)
       namespace_definitions = extract_namespace_definitions(options, root_node)
 
       content = compose_content(hashed_data, root_node, namespace_definitions)
 
-      if options[:human_readable]
-        massage_formatting Gyoku.xml(content, merged_options)
-      else
-        Gyoku.xml(content, merged_options)
-      end
+      xml_string = transform_to_string(content, merged_options)
+
+      return massage_formatting xml_string if options[:human_readable]
+      xml_string
     end
 
-    private
+    # @param [Hash] content the hash to transform.
+    # @param [Hash] options hash of options to apply.
+    #
+    # @return [String]
+    def transform_to_string(content, options)
+      Gyoku.xml(content, options)
+    end
 
     # @param [Hash] hashed_data the content to serialize.
     # @param [Symbol] root_node the base of the XML structure.
@@ -99,7 +108,8 @@ module THTXSerializer
     end
 
     # @param [Hash] options a hash containing several options.
-    # @param [Hash] hashed_data containing the data structure we are working on.
+    # @param [Hash]
+    #        hashed_data containing the data structure we are working on.
     #
     # @return [Array<Symbol, Hash>, FalseClass]
     def extract_root_node(options, hashed_data)
@@ -110,11 +120,8 @@ module THTXSerializer
         root_node = options[:root_node]
       end
 
-      if root_node
-        [root_node, hashed_data]
-      else
-        false
-      end
+      return [root_node, hashed_data] if root_node
+      false
     end
 
     # @return [Hash]

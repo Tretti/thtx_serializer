@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files = `git ls-files -- spec`.split($/)
   gem.extra_rdoc_files = %w[README.md]
 
-  gem.add_runtime_dependency 'nokogiri', '~> 1.6'
+  gem.add_runtime_dependency 'nokogiri', '>= 1.5'
   gem.add_runtime_dependency 'gyoku', '~> 1.1.1'
   gem.add_runtime_dependency 'activesupport', '>= 3.2.17'
 

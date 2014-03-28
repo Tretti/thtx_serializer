@@ -1,9 +1,21 @@
+require 'spec_helper'
+
 describe 'Converter' do
   subject { THTXSerializer::Converter }
 
   context '#to_xml' do
+    context 'given an empty hash is provided' do
+      it 'will produce an empty string' do
+        xml = subject.to_xml({})
+
+        expected = ""
+
+        expect(xml).to eq expected
+      end
+    end
+
     context 'given a plain hash' do
-      it 'will transform into a xml-string' do
+      it 'will transform into a string containing xml' do
         xml = subject.to_xml({ one: { two: 1, three: 2 } })
 
         expected = "<one><two>1</two><three>2</three></one>"
@@ -13,7 +25,7 @@ describe 'Converter' do
     end
 
     context 'given a nested hash' do
-      it 'will transform into a xml-string' do
+      it 'will transform into a string containing xml' do
         xml = subject.to_xml({ one: { two: 1, three: { four: 3 } } })
 
         expected = "<one><two>1</two><three><four>3</four></three></one>"
@@ -65,7 +77,7 @@ describe 'Converter' do
     end
 
     context 'given the option :human_readable' do
-      it 'will massage an xml-string into a human readable string' do
+      it 'will massage an string of xml into a human readable string' do
         xml = subject.to_xml({one: { two: 1, three: 2 }},
           namespace_definitions: { 'xmlns:test' => 'string'}, human_readable: true)
 

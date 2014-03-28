@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe 'Class Methods' do
   describe '.xml_attributes' do
     it 'will hold the defined attributes in an array' do

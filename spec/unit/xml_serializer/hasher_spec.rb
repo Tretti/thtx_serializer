@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe 'Hasher' do
   class MockClass
     include THTXSerializer

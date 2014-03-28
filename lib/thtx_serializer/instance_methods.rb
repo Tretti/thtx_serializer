@@ -1,4 +1,11 @@
+# encoding: utf-8
 module THTXSerializer
+  # Contains the instance methods that are appended to a class that includes
+  # the Serializer.
+  #
+  # Be careful not to overwrite these methods with your own, as it will impede
+  # the functionality of the Serializer.
+  #
   module InstanceMethods
     # @return [String]
     def as_xml

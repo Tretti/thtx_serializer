@@ -11,7 +11,7 @@ Inspiration was taken from the ROXML library.
 ```ruby
 class Example
   include THTXSerializer
-  xml_options human_readable: :true
+  xml_options human_readable: true
 
   xml_attr :method, { into: :first, in: :in_first }
   xml_attr :method2, { into: :second }

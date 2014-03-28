@@ -1,4 +1,11 @@
+# encoding: utf-8
 module THTXSerializer
+  # Contains the class methods that are appended to a class that includes the
+  # Serializer.
+  #
+  # Be careful not to overwrite these methods with your own, as it will impede
+  # the functionality of the Serializer.
+  #
   module ClassMethods
     # The container for xml_attributes
     #
@@ -20,7 +27,7 @@ module THTXSerializer
 
     # @return [Hash]
     def default_options
-      { root_node: self.name.downcase.to_sym }
+      { root_node: name.downcase.to_sym }
     end
 
     # Defines the attributes on the class.
@@ -36,9 +43,9 @@ module THTXSerializer
     #
     # @return [Hash]
     def xml_attr(symbol, options = {})
-      attr = self.xml_attributes[symbol]
+      attr = xml_attributes[symbol]
       fail "This xml_attr has already been defined #{symbol}" if attr
-      self.xml_attributes[symbol] = options
+      xml_attributes[symbol] = options
     end
   end
 end
