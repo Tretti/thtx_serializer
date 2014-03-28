@@ -7,12 +7,12 @@ Gem::Specification.new do |gem|
   gem.version = THTXSerializer::VERSION
   gem.authors = [ 'Björn Skarner' ]
   gem.email = [ 'bjorn.skarner@it.cdon.com' ]
-  gem.description = 'Serialize ruby objects.'
+  gem.description = 'Serialize ruby objects from a hash to xml.'
   gem.summary = gem.description
-  gem.homepage = 'https://github.com/tretti/thtx_serializer'
+  gem.homepage = 'https://github.com/Tretti/thtx_serializer'
   gem.license = 'MIT'
 
-  gem.require_paths = %w[lib lib/thtx_serializer]
+  gem.require_paths = %w[lib]
   gem.files = `git ls-files`.split($/)
   gem.test_files = `git ls-files -- spec`.split($/)
   gem.extra_rdoc_files = %w[README.md]
