@@ -1,5 +1,6 @@
-[![Build Status](https://travis-ci.org/Tretti/thtx_serializer.svg)](https://travis-ci.org/Tretti/thtx_serializer)[![Coverage Status](https://coveralls.io/repos/Tretti/thtx_serializer/badge.png)](https://coveralls.io/r/Tretti/thtx_serializer)[![Code Climate](https://codeclimate.com/github/Tretti/thtx_serializer.png)](https://codeclimate.com/github/Tretti/thtx_serializer)
 # To Hash To XML Serializer
+
+[![Build Status](https://travis-ci.org/Tretti/thtx_serializer.svg?branch=master)](https://travis-ci.org/Tretti/thtx_serializer) [![Coverage Status](https://coveralls.io/repos/Tretti/thtx_serializer/badge.png)](https://coveralls.io/r/Tretti/thtx_serializer) [![Code Climate](https://codeclimate.com/github/Tretti/thtx_serializer.png)](https://codeclimate.com/github/Tretti/thtx_serializer)
 
 A small library to build an XML-document from an internal Hash representation of the Object.
 
