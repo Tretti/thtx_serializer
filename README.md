@@ -76,6 +76,10 @@ Options:
 Usage:
 
 ```ruby
+def a_node
+  'Some string'
+end
+
 xml_attr :a_node
 
 # =>
