@@ -81,6 +81,20 @@ describe 'Hasher' do
         end
       end
 
+      context 'given an attribute and incorrect options key' do
+        it 'will raise an ArgumentError' do
+          obj.class.class_eval do
+            def mock_method
+              'A String'
+            end
+          end
+
+          expect do
+            subject.send(:produce_data, :mock_method, inchala: :in_key)
+          end.to raise_error(ArgumentError)
+        end
+      end
+
       context 'given an attribute that contains a collection' do
         context 'and no :in key option is provided' do
           it 'will produce a hash with the containing elements' do

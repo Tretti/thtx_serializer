@@ -29,7 +29,8 @@ module THTXSerializer
     # @param [Object] data to be contained inside the node
     # @param [Hash] options
     def build_node(key, options)
-      produced_key, data, in_key = produce_data(key, options)
+      options_copy = options.dup
+      produced_key, data, in_key = produce_data(key, options_copy)
       THTXSerializer::HashNode.new(produced_key, data, in_key).build
     end
 
@@ -38,8 +39,11 @@ module THTXSerializer
     #
     # @return [Hash]
     def produce_data(key, options)
-      xml_key = options.fetch(:into, key).to_sym
-      in_key = options[:in]
+      xml_key = (options.delete(:into) { key }).to_sym
+      in_key = options.delete(:in) { nil }
+      if options.any?
+        raise ArgumentError, "Unrecognized option(s): #{options}"
+      end
 
       data = collect_data(key)
 
