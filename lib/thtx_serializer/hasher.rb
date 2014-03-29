@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'active_support/inflector'
 
 module THTXSerializer
   # Manages the creation of the object hash.
@@ -18,13 +17,21 @@ module THTXSerializer
     # @return [Hash]
     #         The object and the contained data transformed into a hash.
     #
-    def hash_object
+    def to_hash
       node.class.xml_attributes.each_with_object({}) do |(key, options), hash|
-        hash.merge!(produce_data(key, options))
+        hash.merge!(build_node(key, options))
       end
     end
 
     private
+
+    # @param [Object] key to hold the data
+    # @param [Object] data to be contained inside the node
+    # @param [Hash] options
+    def build_node(key, options)
+      produced_key, data, in_key = produce_data(key, options)
+      THTXSerializer::HashNode.new(produced_key, data, in_key).build
+    end
 
     # @param [Symbol, String] key
     # @param [Hash] options
@@ -36,35 +43,7 @@ module THTXSerializer
 
       data = collect_data(key)
 
-      if in_key
-        { in_key.to_sym => { xml_key => data } }
-      else
-        if data.is_a?(Array)
-          if data.empty?
-            data = ''
-            xml_key = (pluralize(xml_key).to_s << '/').to_sym
-          else
-            collection_key = pluralize(xml_key)
-          end
-        end
-
-        create(xml_key, data, collection_key)
-      end
-    end
-
-    # @param [Symbol] xml_key node name in the xml tree.
-    # @param [Object] data the generated method object.
-    #
-    # @param [Symbol] collection_key the key used if a collection
-    #                 is to be wrapped.
-    #
-    # @return [Hash] The hash produced by calling the method.
-    def create(xml_key, data, collection_key)
-      if collection_key
-        { collection_key.to_sym => { xml_key => data } }
-      else
-        { xml_key => data }
-      end
+      [xml_key, data, in_key]
     end
 
     # @param [Symbol] key
@@ -72,33 +51,27 @@ module THTXSerializer
     def collect_data(key)
       result = node.send(key)
 
+      calling_block = lambda do |obj|
+        obj.respond_to?(:__hash_data__) ? obj.__hash_data__ : obj
+      end
+
       if result.respond_to?(:each)
-        handle_enumerable(result)
+        handle_enumerable(result, &calling_block)
       else
-        handle_regular_object(result)
+        handle_regular_object(result, &calling_block)
       end
     end
 
     # @param [Enumerable] enum an object that implements each.
     # @return [Array]
-    def handle_enumerable(enum)
-      enum.map do |obj|
-        obj.respond_to?(:__hash_data__) ? obj.__hash_data__ : obj
-      end
+    def handle_enumerable(enum, &block)
+      enum.map { |obj| block.call(obj) }
     end
 
     # @param [Object] obj any object that is not an enumerable.
     # @return [Object, Hash]
-    def handle_regular_object(obj)
-      obj.respond_to?(:__hash_data__) ? obj.__hash_data__ : obj
-    end
-
-    # A wrapping for ActiveSupport.
-    #
-    # @param [String, Symbol] key
-    # @return [String]
-    def pluralize(key)
-      ActiveSupport::Inflector.pluralize(key)
+    def handle_regular_object(obj, &block)
+      block.call(obj)
     end
   end
 end

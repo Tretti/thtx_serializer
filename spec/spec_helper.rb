@@ -1,5 +1,4 @@
 # encoding: utf-8
-require 'thtx_serializer'
 
 if ENV['COVERAGE'] == 'true'
   require 'simplecov'
@@ -13,15 +12,16 @@ if ENV['COVERAGE'] == 'true'
   SimpleCov.start do
     command_name 'spec:unit'
 
-    add_filter 'support'
     add_filter 'config'
     add_filter 'vendor'
+    add_filter 'spec'
 
     minimum_coverage 98.5
   end
 end
 
 require 'devtools'
+require 'thtx_serializer'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expect_with|

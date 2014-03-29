@@ -12,14 +12,14 @@ describe 'Hasher' do
   let(:obj) { MockClass.new }
   subject { THTXSerializer::Hasher.new(obj) }
 
-  describe '#hash_object' do
+  describe '#to_hash' do
     before :each do
       MockClass.send(:xml_attributes=, {})
     end
 
     context 'given no attributes have been defined' do
       it 'will return an empty hash' do
-        expect(subject.hash_object).to eq({})
+        expect(subject.to_hash).to eq({})
       end
     end
 
@@ -34,7 +34,7 @@ describe 'Hasher' do
         obj.class.send(:xml_attr, :mock_method)
         expected = { mock_method: 'A String' }
 
-        expect(subject.hash_object).to eq expected
+        expect(subject.to_hash).to eq expected
       end
     end
   end
@@ -50,7 +50,7 @@ describe 'Hasher' do
 
         result = subject.send(:produce_data, :mock_method, {})
 
-        expect(result).to eq(mock_method: 'A String')
+        expect(result).to eq([:mock_method, 'A String', nil])
       end
 
       context 'given an attribute and option with the key :into' do
@@ -63,7 +63,7 @@ describe 'Hasher' do
 
           result = subject.send(:produce_data, :mock_method, into: :into_key)
 
-          expect(result).to eq(into_key: 'A String')
+          expect(result).to eq([:into_key, 'A String', nil])
         end
       end
 
@@ -77,7 +77,7 @@ describe 'Hasher' do
 
           result = subject.send(:produce_data, :mock_method, in: :in_key)
 
-          expect(result).to eq(in_key: { mock_method: 'A String' })
+          expect(result).to eq([:mock_method, 'A String', :in_key])
         end
       end
 
@@ -96,16 +96,16 @@ describe 'Hasher' do
               end
             end
 
-            expected = {
-              rows: {
-                row: [
-                  { test_class_as: { defined: 'on the class' } },
-                  { test_class_as: { defined: 'on the class' } },
-                  { test_class_as: { defined: 'on the class' } },
-                  'String'
-                ]
-              }
-            }
+            expected = [
+              :row, [
+                { test_class_as:
+                  { defined: 'on the class' }
+                }, { test_class_as: { defined: 'on the class' } },
+                { test_class_as: { defined: 'on the class' } },
+                "String"
+              ],
+              nil
+            ]
 
             expect(subject.send(:produce_data, :mock_method, into: :row))
             .to eq(expected)

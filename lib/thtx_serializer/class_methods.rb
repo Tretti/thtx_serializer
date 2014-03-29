@@ -27,7 +27,7 @@ module THTXSerializer
 
     # @return [Hash]
     def default_options
-      { root_node: name.downcase.to_sym }
+      { root_node: self.class.name.downcase.to_sym }
     end
 
     # Defines the attributes on the class.

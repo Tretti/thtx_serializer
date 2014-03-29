@@ -3,52 +3,76 @@ require 'spec_helper'
 
 describe 'Class Methods' do
   describe '.xml_attributes' do
-    it 'will hold the defined attributes in an array' do
-      class TestClassAttributes
+    let(:test_class_attributes) do
+      Class.new do
         include THTXSerializer
       end
-
-      klass = TestClassAttributes
-      expect(klass.xml_attributes).to eq({})
+    end
+    it 'will hold the defined attributes in an array' do
+      expect(test_class_attributes.xml_attributes).to eq({})
     end
   end
 
   describe '.xml_attr' do
     context 'given an attribute is defined' do
-      it 'will be added to the list of attributes' do
-        class TestClassFirst
+      let(:test_class_first) do
+        Class.new do
           include THTXSerializer
           xml_attr :first
         end
+      end
 
-        klass = TestClassFirst
-        expect(klass.xml_attributes).to eq(first: {})
+      it 'will be added to the list of attributes' do
+        expect(test_class_first.xml_attributes).to eq(first: {})
       end
     end
 
     context 'given an attribute has already been defined' do
-      it 'will raise an error' do
-        class TestClassDuplicate
+      let(:test_class_duplicate) do
+        Class.new do
           include THTXSerializer
           xml_attr :duplicate
         end
+      end
 
-        klass = TestClassDuplicate
-
-        expect { klass.send(:xml_attr, :duplicate) }
+      it 'will raise an error' do
+        expect { test_class_duplicate.send(:xml_attr, :duplicate) }
         .to raise_error(RuntimeError)
       end
     end
 
     context 'given an options hash is given' do
-      it 'will be contained inside the list of attributes' do
-        class TestClassAs
+      let(:test_class_as) do
+        Class.new do
           include THTXSerializer
           xml_attr :first, in: :test_key
         end
+      end
 
-        klass = TestClassAs
-        expect(klass.xml_attributes).to eq(first: { in: :test_key })
+      it 'will be contained inside the list of attributes' do
+        expect(test_class_as.xml_attributes).to eq(first: { in: :test_key })
+      end
+    end
+  end
+
+  describe '.xml_options' do
+    let(:test_class_xml_options) do
+      Class.new do
+        include THTXSerializer
+      end
+    end
+
+    context 'given no data is provided' do
+      it 'will return the default options' do
+        expect(test_class_xml_options.xml_options({}))
+          .to eq(root_node: :class)
+      end
+    end
+
+    context 'given data is provided' do
+      it 'will merge default options and data' do
+        expect(test_class_xml_options.xml_options(human_readable: true))
+        .to eq(root_node: :class, human_readable: true)
       end
     end
   end

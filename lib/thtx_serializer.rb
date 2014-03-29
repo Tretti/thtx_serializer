@@ -2,6 +2,7 @@
 require 'thtx_serializer/class_methods'
 require 'thtx_serializer/converter'
 require 'thtx_serializer/hasher'
+require 'thtx_serializer/hash_node'
 require 'thtx_serializer/instance_methods'
 
 # The module that needs to be included to turn the class at hand into a

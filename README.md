@@ -50,6 +50,7 @@ Example.new.as_xml
 - `:namespace_definitions` - Hash define keys that you need to add to the root node.
 
 - `:key_converter` - Choices are the following:
+
 ```ruby
   :lower_camelcase
   :camelcase
@@ -111,7 +112,7 @@ Oh sooo much!
 
 But to start:
 - A replacement of Nokogiri and Gyoku with [Builder](https://github.com/jimweirich/builder).
-- Extracting a class from Hasher.
+- Clean up Hasher specs.
 
 ## Contributing
 

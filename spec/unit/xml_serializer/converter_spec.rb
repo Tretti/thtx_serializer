@@ -17,7 +17,7 @@ describe 'Converter' do
 
     context 'given a hash without a root key' do
       it 'will return a string with xml' do
-        xml = subject.to_xml(two: 1, three: 2 )
+        xml = subject.to_xml(two: 1, three: 2)
 
         expected = '<two>1</two><three>2</three>'
 

@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 module THTXSerializer
   # Contains the instance methods that are appended to a class that includes
   # the Serializer.
@@ -14,7 +15,7 @@ module THTXSerializer
 
     # @return [Hash] All components of the object transformed into a big Hash.
     def __hash_data__
-      Hasher.new(self).hash_object
+      Hasher.new(self).to_hash
     end
   end
 end
