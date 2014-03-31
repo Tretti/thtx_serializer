@@ -19,7 +19,13 @@ module THTXSerializer
     #
     def to_hash
       node.class.xml_attributes.each_with_object({}) do |(key, options), hash|
-        hash.merge!(build_node(key, options))
+        hash.merge!(build_node(key, options)) do |_, existing_hash, new_content|
+          if existing_hash.is_a?(Hash) && new_content.is_a?(Hash)
+            existing_hash.merge(new_content)
+          else
+            new_content
+          end
+        end
       end
     end
 

@@ -37,6 +37,53 @@ describe 'Hasher' do
         expect(subject.to_hash).to eq expected
       end
     end
+
+    context 'duplicate nodes in the hash' do
+      context 'given there are two attrs with the same :in' do
+        it 'will merge them into one hash' do
+          obj.class.class_eval do
+            xml_attr :mock_method, in: :defined_by_in
+            xml_attr :mock_method2, in: :defined_by_in
+
+            def mock_method
+              'string1'
+            end
+
+            def mock_method2
+              'string2'
+            end
+          end
+
+          expected = { defined_by_in: {
+            mock_method: 'string1',
+            mock_method2: 'string2' }
+          }
+
+          expect(subject.to_hash).to eq expected
+        end
+      end
+
+      context 'given there are two attrs but only one is a hash' do
+        it 'the second node will overwrite the first' do
+          obj.class.class_eval do
+            xml_attr :mock_method, in: :defined_by_in
+            xml_attr :defined_by_in
+
+            def mock_method
+              'string1'
+            end
+
+            def defined_by_in
+              'string2'
+            end
+          end
+
+          expected = { defined_by_in:  'string2' }
+
+          expect(subject.to_hash).to eq expected
+        end
+      end
+    end
   end
 
   describe '#produce_data' do
@@ -122,7 +169,7 @@ describe 'Hasher' do
             ]
 
             expect(subject.send(:produce_data, :mock_method, into: :row))
-            .to eq(expected)
+              .to eq(expected)
           end
         end
       end

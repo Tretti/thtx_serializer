@@ -1,5 +1,21 @@
 # Change log
 
+## Head
+- Addition of merging capabilities.
+  ```ruby
+  xml_attr :mock_method, in: :defined_by_in
+  xml_attr :mock_method2, in: :defined_by_in
+  ```
+
+  Will yield this result instead of overwriting the previous one:
+
+  ```ruby
+  { defined_by_in: {
+    mock_method: 'string1',
+    mock_method2: 'string2' }
+  }
+  ```
+
 ## 0.1.1
 - Add support for singularize for collection nodes.
 
