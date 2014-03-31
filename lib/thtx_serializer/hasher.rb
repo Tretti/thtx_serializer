@@ -42,7 +42,7 @@ module THTXSerializer
       xml_key = (options.delete(:into) { key }).to_sym
       in_key = options.delete(:in) { nil }
       if options.any?
-        raise ArgumentError, "Unrecognized option(s): #{options}"
+        fail ArgumentError, "Unrecognized option(s): #{options}"
       end
 
       data = collect_data(key)

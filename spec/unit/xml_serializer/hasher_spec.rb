@@ -116,7 +116,7 @@ describe 'Hasher' do
                   { defined: 'on the class' }
                 }, { test_class_as: { defined: 'on the class' } },
                 { test_class_as: { defined: 'on the class' } },
-                "String"
+                'String'
               ],
               nil
             ]

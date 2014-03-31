@@ -29,7 +29,7 @@ describe 'Converter' do
       it 'will transform into a string containing xml' do
         xml = subject.to_xml(one: { two: 1, three: 2 })
 
-        expected = "<one><two>1</two><three>2</three></one>"
+        expected = '<one><two>1</two><three>2</three></one>'
 
         expect(xml).to eq expected
       end
@@ -39,7 +39,7 @@ describe 'Converter' do
       it 'will transform into a string containing xml' do
         xml = subject.to_xml(one: { two: 1, three: { four: 3 } })
 
-        expected = "<one><two>1</two><three><four>3</four></three></one>"
+        expected = '<one><two>1</two><three><four>3</four></three></one>'
 
         expect(xml).to eq expected
       end
@@ -49,7 +49,7 @@ describe 'Converter' do
       it 'will not manipulate the keys' do
         xml = subject.to_xml(one: { one_one: 1, 'two-two' => { three: 3 } })
 
-        expected = "<one><one_one>1</one_one><two-two><three>3</three></two-two></one>"
+        expected = '<one><one_one>1</one_one><two-two><three>3</three></two-two></one>'
 
         expect(xml).to eq expected
       end
@@ -61,7 +61,7 @@ describe 'Converter' do
           { one: { one_one: 1, two_two: { three: 3 } } },
           key_converter: :camelcase)
 
-        expected = "<One><OneOne>1</OneOne><TwoTwo><Three>3</Three></TwoTwo></One>"
+        expected = '<One><OneOne>1</OneOne><TwoTwo><Three>3</Three></TwoTwo></One>'
 
         expect(xml).to eq expected
       end
@@ -73,7 +73,7 @@ describe 'Converter' do
           { one: { two: 1, three: 2 } },
           namespace: 'integration')
 
-        expected = "<integration:one><integration:two>1</integration:two><integration:three>2</integration:three></integration:one>"
+        expected = '<integration:one><integration:two>1</integration:two><integration:three>2</integration:three></integration:one>'
 
         expect(xml).to eq expected
       end
@@ -85,7 +85,7 @@ describe 'Converter' do
           { one: { two: 1, three: 2 } },
           namespace_definitions: { 'melons:test' => 'string' })
 
-        expected = "<one melons:test=\"string\"><two>1</two><three>2</three></one>"
+        expected = '<one melons:test="string"><two>1</two><three>2</three></one>'
 
         expect(xml).to eq expected
       end
