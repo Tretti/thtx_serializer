@@ -51,9 +51,9 @@ module THTXSerializer
 
     # @return [Symbol, NilClass] provides either a nil or a collection symbol.
     def process_data
-      if data.is_a?(Array)
+      if data.is_a?(Array) || data.is_a?(Set)
         self.collection_key = process_collection
-      elsif data.nil? || data.empty?
+      elsif (data.is_a?(String) && data.empty?) || data.nil?
         process_empty_object
       end
     end

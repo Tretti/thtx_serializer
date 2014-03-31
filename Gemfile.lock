@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    thtx_serializer (0.1.0)
+    thtx_serializer (0.1.1)
       activesupport (>= 3.2.17)
       gyoku (~> 1.1.1)
       nokogiri (>= 1.5)

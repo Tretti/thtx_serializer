@@ -15,20 +15,19 @@ describe 'HashNode' do
 
     context 'given empty data' do
       it 'will build an empty node' do
-        expected = { :"mock_method/" => '' }
+        expected = { :'mock_method/' => '' }
         result = subject.new(:mock_method, nil)
 
         expect(result.build).to eq expected
       end
     end
 
-    context 'given an object that does not respond to #empty?' do
-      it 'will raise a no method error' do
-        mock_struct = Struct.new(:__hash_data__)
+    context 'given an empty string as data' do
+      it 'will build an empty node' do
+        expected = { :'mock_method/' => '' }
+        result = subject.new(:mock_method, '')
 
-        result = subject.new(:mock_method, mock_struct.new(''))
-
-        expect { result.build }.to raise_error(NoMethodError)
+        expect(result.build).to eq expected
       end
     end
 
