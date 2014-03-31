@@ -43,7 +43,7 @@ module THTXSerializer
     # @return [Hash] The hash produced by calling the method.
     def transform_to_hash
       if collection_key
-        { collection_key.to_sym => { key => data } }
+        { collection_key.to_sym => { singularize_key.to_sym => data } }
       else
         { key => data }
       end
@@ -103,6 +103,13 @@ module THTXSerializer
     # @return [Symbol]
     def transform_to_empty_key(key)
       (key.to_s << '/').to_sym
+    end
+
+    # A wrapping for ActiveSupport
+    #
+    # @return [String]
+    def singularize_key
+      ActiveSupport::Inflector.singularize(key)
     end
 
     # A wrapping for ActiveSupport.

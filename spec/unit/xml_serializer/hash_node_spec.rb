@@ -59,6 +59,15 @@ describe 'HashNode' do
       end
     end
 
+    context 'given a pluralized key and an Array of objects' do
+      it 'will produce a nested hash' do
+        expected = { mock_methods: { mock_method: %w[string string2] } }
+        result = subject.new(:mock_methods, %w[string string2])
+
+        expect(result.build).to eq expected
+      end
+    end
+
     context 'given a key and an empty Array' do
       it 'will produce a hash with empty value' do
         expected = { :'mock_methods/' => '' }

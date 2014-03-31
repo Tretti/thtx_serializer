@@ -1,5 +1,17 @@
 # Change log
 
+## 0.1.1
+- Add support for singularize for collection nodes.
+
+  This means the following is possible without using :into
+  ```ruby
+  xml_attr :some_nodes # a collection.
+  ```
+
+  ```xml
+  <some_nodes><some_node></some_node></some_nodes
+  ```
+
 ## 0.1.0
 - Better options handling in hasher.
 - Now able to handle empty singular nodes.
