@@ -6,8 +6,6 @@ module THTXSerializer
   # according to the defined attributes.
   #
   class Hasher
-    attr_reader :node
-
     # @param [Object] obj an object that includes THTXSerializer
     # @return [THTXSerializer]
     def initialize(obj)
@@ -19,17 +17,31 @@ module THTXSerializer
     #
     def to_hash
       node.class.xml_attributes.each_with_object({}) do |(key, options), hash|
-        hash.merge!(build_node(key, options)) do |_, existing_hash, new_content|
-          if existing_hash.is_a?(Hash) && new_content.is_a?(Hash)
-            existing_hash.merge(new_content)
-          else
-            new_content
-          end
-        end
+        combine_hashes(key, options, hash)
       end
     end
 
     private
+
+    # @return [Object]
+    def node
+      @node
+    end
+
+    # @param [Symbol] key the hash key in question.
+    # @param [Hash] options to apply to this node.
+    # @param [Hash] hash the structure to work with.
+    #
+    # @return [Hash] returns the hash with the new content applied
+    def combine_hashes(key, options, hash)
+      hash.merge!(build_node(key, options)) do |_, left, right|
+        if left.is_a?(Hash) && right.is_a?(Hash)
+          left.merge(right)
+        else
+          right
+        end
+      end
+    end
 
     # @param [Object] key to hold the data
     # @param [Object] data to be contained inside the node
