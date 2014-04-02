@@ -1,6 +1,6 @@
 # Change log
 
-## Head
+## 0.2.0
 - Addition of merging capabilities.
   ```ruby
   xml_attr :mock_method, in: :defined_by_in
@@ -15,6 +15,8 @@
     mock_method2: 'string2' }
   }
   ```
+
+- Minor refactoring in Hasher
 
 ## 0.1.1
 - Add support for singularize for collection nodes.
